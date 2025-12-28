@@ -2,15 +2,15 @@
 
 A comprehensive platform for analyzing, screening, and backtesting trading strategies on NSE and BSE stocks and indices.
 
-## 🚀 Enhanced Version Available!
+##  Enhanced Version Available!
 
 **For Algorithm Builder and Comprehensive Screening features, use `app_enhanced.py`**
 
 The enhanced version includes:
-- 🔧 **Algorithm Builder**: Create custom screening algorithms with visual condition builder
-- 📊 **Comprehensive Stock Database**: Access all NSE/BSE listed companies
-- 🔍 **Batch Screening**: Screen hundreds of stocks simultaneously
-- 📈 **Fundamental Data**: P/E, ROE, Debt/Equity, Growth metrics, etc.
+-  **Algorithm Builder**: Create custom screening algorithms with visual condition builder
+-  **Comprehensive Stock Database**: Access all NSE/BSE listed companies
+-  **Batch Screening**: Screen hundreds of stocks simultaneously
+-  **Fundamental Data**: P/E, ROE, Debt/Equity, Growth metrics, etc.
 
 See [README_ENHANCED.md](README_ENHANCED.md) for details.
 

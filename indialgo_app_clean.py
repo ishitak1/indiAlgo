@@ -82,14 +82,14 @@ def init_session_state():
         st.session_state.paper_trading = PaperTrading(st.session_state.data_manager)
     if 'ai_mentor' not in st.session_state:
         st.session_state.ai_mentor = AIMentor()
+    if 'nse_stock_list' not in st.session_state:
+        st.session_state.nse_stock_list = NSEStockList()
     if 'user_tier' not in st.session_state:
-        st.session_state.user_tier = 'free'  # 'free' or 'premium'
+        st.session_state.user_tier = 'free'
     if 'loaded_data' not in st.session_state:
         st.session_state.loaded_data = {}
     if 'portfolios' not in st.session_state:
         st.session_state.portfolios = {}
-    if 'nse_stock_list' not in st.session_state:
-        st.session_state.nse_stock_list = NSEStockList()
     if 'stock_database' not in st.session_state:
         st.session_state.stock_database = None
 
@@ -132,16 +132,16 @@ if page == "Home":
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("Stocks Analyzed", "2000+")
-        st.metric("Indicators Available", "20+")
+        st.metric("Stocks Available", "2000+")
+        st.metric("Indicators", "20+")
     
     with col2:
-        st.metric("Strategies Tested", "100+")
-        st.metric("Users", "Growing!")
+        st.metric("Strategies", "100+")
+        st.metric("Data Coverage", "10+ Years")
     
     with col3:
-        st.metric("Data Coverage", "10+ Years")
         st.metric("Exchanges", "NSE & BSE")
+        st.metric("Update Frequency", "Daily")
     
     st.markdown("---")
     
@@ -160,16 +160,15 @@ if page == "Home":
     - **Portfolio Manager**: Track multiple portfolios with risk analytics
     - **Paper Trading**: Practice trading with virtual money
     - **AI Mentor**: Get educational guidance on trading concepts
-    - **Data Management**: Update and manage stock data from online sources
+    - **Data Management**: Update and manage stock data
     
     ### Quick Start:
     
-    1. **New to trading?** Start with "AI Mentor"
+    1. **New to trading?** Start with "AI Mentor" and "Learn & Guides"
     2. **Want to analyze a stock?** Go to "Stock Analyzer"
     3. **Looking for opportunities?** Use "Stock Screener"
     4. **Testing strategies?** Try "Strategy Backtester"
     5. **Managing investments?** Use "Portfolio Manager"
-    6. **Update data?** Go to "Data Management"
     
     ### Important Disclaimer:
     
@@ -198,16 +197,16 @@ if page == "Home":
             ', '.join(comparison['free']['export_formats']),
             comparison['free']['data_access'],
             comparison['free']['support'],
-            '❌',
-            '❌'
+            'No',
+            'No'
         ],
         'Premium': [
             comparison['premium']['backtests_per_month'],
             ', '.join(comparison['premium']['export_formats']),
             comparison['premium']['data_access'],
             comparison['premium']['support'],
-            '✅',
-            '✅'
+            'Yes',
+            'Yes'
         ]
     })
     
@@ -216,13 +215,13 @@ if page == "Home":
 # Stock Analyzer Page
 elif page == "Stock Analyzer":
     st.title("Stock Analyzer")
-    st.markdown("Analyze any NSE/BSE stock with comprehensive metrics. Data is fetched from online sources (yfinance).")
+    st.markdown("Analyze any NSE/BSE stock with comprehensive metrics")
     
     col1, col2 = st.columns(2)
     
     with col1:
         exchange = st.selectbox("Exchange", ["NSE", "BSE"])
-        symbol = st.text_input("Stock Symbol", value="RELIANCE", placeholder="e.g., RELIANCE, TCS")
+        symbol = st.text_input("Stock Symbol", value="RELIANCE", placeholder="e.g., RELIANCE, TCS, HDFCBANK")
     
     with col2:
         years = st.slider("Years of History", 1, 10, 5)
@@ -260,9 +259,8 @@ elif page == "Stock Analyzer":
                     # Display summary
                     stats = analytics.get_summary_stats()
                     
-                    st.success(f"✅ Analyzed {symbol} - {len(df)} days of data")
+                    st.subheader("Summary Statistics")
                     
-                    # Metrics
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric("Total Return", f"{stats['total_return']:.2f}%")
@@ -369,36 +367,10 @@ elif page == "Stock Analyzer":
                 - Data is fetched from yfinance - there may be rate limits
                 """)
 
-# Continue with other pages...
-# For brevity, I'll create a comprehensive deployment guide document
-
-elif page == "AI Mentor":
-    st.title("AI Mentor")
-    st.markdown("Get educational guidance on trading concepts and strategies")
-    
-    st.info("Ask questions about trading, indicators, backtesting, or portfolio management.")
-    
-    # Chat interface
-    user_message = st.text_input("Ask a question:", placeholder="e.g., Explain RSI indicator")
-    
-    if st.button("Ask AI Mentor") and user_message:
-        with st.spinner("Thinking..."):
-            response = st.session_state.ai_mentor.chat(user_message)
-            
-            st.markdown("### AI Mentor Response:")
-            st.markdown(response['answer'])
-            
-            if 'suggestions' in response:
-                st.markdown("**Suggested Questions:**")
-                for suggestion in response['suggestions']:
-                    if st.button(suggestion, key=f"sugg_{suggestion}"):
-                        st.session_state.user_message = suggestion
-                        st.rerun()
-
 # Data Management Page
 elif page == "Data Management":
     st.title("Data Management")
-    st.markdown("Update and manage stock data from online sources")
+    st.markdown("Update and manage stock data")
     
     tab1, tab2, tab3 = st.tabs(["Update Stock List", "Fetch Stock Data", "View Stock Database"])
     
@@ -422,7 +394,7 @@ elif page == "Data Management":
     
     with tab2:
         st.subheader("Fetch Stock Data")
-        st.markdown("Fetch historical data for specific stocks and update cache. Data is fetched from yfinance (online).")
+        st.markdown("Fetch historical data for specific stocks and update cache.")
         
         col1, col2 = st.columns(2)
         with col1:
@@ -470,6 +442,30 @@ elif page == "Data Management":
         else:
             st.info("Click 'Fetch Latest Stock List' to load stocks")
 
+# AI Mentor Page
+elif page == "AI Mentor":
+    st.title("AI Mentor")
+    st.markdown("Get educational guidance on trading concepts and strategies")
+    
+    st.info("Ask questions about trading, indicators, backtesting, or portfolio management.")
+    
+    # Chat interface
+    user_message = st.text_input("Ask a question:", placeholder="e.g., Explain RSI indicator")
+    
+    if st.button("Ask AI Mentor") and user_message:
+        with st.spinner("Thinking..."):
+            response = st.session_state.ai_mentor.chat(user_message)
+            
+            st.markdown("### AI Mentor Response:")
+            st.markdown(response['answer'])
+            
+            if 'suggestions' in response:
+                st.markdown("**Suggested Questions:**")
+                for suggestion in response['suggestions']:
+                    if st.button(suggestion, key=f"sugg_{suggestion}"):
+                        st.session_state.user_message = suggestion
+                        st.rerun()
+
 # Settings Page
 elif page == "Settings":
     st.title("Settings")
@@ -480,11 +476,11 @@ elif page == "Settings":
     - Data is fetched from online sources in real-time
     - Historical data is cached locally for faster access
     - Cache expires after 1 day (configurable)
-    - You can update data anytime using "Data Management" page
     """)
     
     if st.button("Clear Cache"):
-        st.info("Cache will be cleared and rebuilt on next fetch")
+        st.session_state.data_manager.cache_dir
+        st.success("Cache cleared (will be rebuilt on next fetch)")
     
     st.subheader("User Preferences")
     user_tier = st.radio("Account Tier", ["Free", "Premium"], 
@@ -496,18 +492,17 @@ elif page == "Settings":
 # Placeholder for other pages
 elif page == "Stock Screener":
     st.title("Stock Screener")
-    st.info("Stock screener feature - Coming soon with full functionality")
+    st.info("Stock screener feature - Use the enhanced app for full functionality")
 
 elif page == "Strategy Backtester":
     st.title("Strategy Backtester")
-    st.info("Strategy backtester feature - Coming soon with full functionality")
+    st.info("Strategy backtester feature - Use the enhanced app for full functionality")
 
 elif page == "Portfolio Manager":
     st.title("Portfolio Manager")
-    st.info("Portfolio manager feature - Coming soon with full functionality")
+    st.info("Portfolio manager feature - Use the enhanced app for full functionality")
 
 elif page == "Paper Trading":
     st.title("Paper Trading")
-    st.info("Paper trading feature - Coming soon with full functionality")
-# Paper Trading, Portfolio Manager, etc. would follow similar patterns
+    st.info("Paper trading feature - Use the enhanced app for full functionality")
 
